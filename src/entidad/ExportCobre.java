@@ -64,14 +64,63 @@ public class ExportCobre {
     * (todo en minúscula). Si el nombre o el apellido tiene menos letras de las que
     *   se necesitan, se les asignará a las letras faltantes el carácter x.
     Ejemplo: Si el cliente es Luis Saa Cancino y país destino Grecia
+    * domingo saavedra saavedra chile
+    * domin_edrah@exportcobre.cl
     devolverá: luisx_saaxr@exportcobre.cl  */
-    public String correo(){
-        return "en construcción";
+    public String correo(){ //Luis Saa Cancino
+                            // 0    1     2
+        String email = "";
+
+
+        String[] nombreCompleto = nombreCliente.split(" ");
+
+        //extraer 5 primeros caracteres del nombre
+        if(nombreCompleto[0].length()>=5){
+            //tiene 5 o mas caracteres
+            email = nombreCompleto[0].substring(0,5);
+        }else{
+            //tiene 4 o menos
+            //¿Cuantos menos tiene? lee 3 = 2 leexx
+            email = nombreCompleto[0];
+            int dif = 5 - nombreCompleto[0].length();
+
+            for(int i= 1; i<=dif;i++){
+                email =email.concat("x");
+            }
+        }
+
+        email = email.concat("_");
+
+        //extraer 4 caracteres del apellido paterno
+        //saavedra
+        //tiene 4 o mas caracteres el apellido
+        if(nombreCompleto[1].length()>=4){
+            //si tiene 4 caracteres o mas
+            email = email + nombreCompleto[1].substring(nombreCompleto[1].length()-4);
+        }else{
+            email = email+nombreCompleto[1];
+            int diff = 4 - nombreCompleto[1].length(); //saa
+            for(int i= 1; i<=diff;i++){
+                email =email.concat("x");
+            }
+        }
+
+        email = email + paisDestino.substring(1,2) + "@exportcobre.cl";
+
+        return email.toLowerCase();
     }
 
     //b.	mesMayorExportación: devolverá el número del mes que hubo mayor exportación.
     public int mesMayorExportacion(){
-        return 0;
+        int max=-1, mes=0;
+        for(int i=0;i<toneladasExportadas.length;i++){
+            if(toneladasExportadas[i]>max){
+                max = toneladasExportadas[i];
+                mes = (i+1);
+            }
+        }
+        return mes;
+
     }
 
     /*c.	totalOtoñoInvierno: devolverá el total de exportaciones realizada en el
@@ -79,14 +128,14 @@ public class ExportCobre {
     public int totalOtonnoInvierno(){
         int suma = 0;
         for (int i=3;i<9;i++){
-            suma = suma + toneladasExportadas[i];
+            suma = suma + this.toneladasExportadas[i];
         }
         return suma;
     }
 
     /*d.	cantidadExportada: devolverá la cantidad que se exportó en un mes X. 	*/
     public int cantidadExportada(int mesX){ //12
-        return toneladasExportadas[mesX-1];
-        //toneladasExportadas[12]
+        return this.toneladasExportadas[mesX-1];
+        //toneladasExportadas[12]x
     }
 }
